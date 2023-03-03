@@ -1,28 +1,9 @@
-
-#CALCULATE SIMILARITY: 
-
-#algorithm calculates rating between users. 
-#approach: 
-#1)Create a dictionary that has: user: {poi:score, poi2:score}
-#2) Get pois that user has visited 
-#3) if usertrain1 has visited any places == usertest its rating will improve. 
-
-#dictionary to store: --> user:{poi1:score1, poi2:score2....}
-#num: only comunes 
-#den: todos y al cuadrado 
-
-
-
 import math 
 
 
-
-def knnAlgorithm(trainset, user_test): 
-        
+def readknn(trainset):
     user_poi_scores = {}
-    userSquaredSum = {} #poner sumatorio de score al cuadrado de cada uno 
-    similarity_scores  ={}
-
+    userSquaredSum = {} 
     with open(trainset) as train:
             for line in train:
                 split_line =line.split("\t")
@@ -45,7 +26,15 @@ def knnAlgorithm(trainset, user_test):
                     userSquaredSum[int(user_id)] = int(score.strip())**2
                 else:
                     userSquaredSum[int(user_id)] += int(score.strip())**2
+    
+    return userSquaredSum, user_poi_scores
 
+
+
+
+def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom): 
+        
+    similarity_scores  ={}
 
     #Rating numerador --> sumatorio rui*rvi
 
@@ -84,7 +73,7 @@ def knnAlgorithm(trainset, user_test):
     sorted_similarity = dict(sorted(similarity_scores.items(), key=lambda item: item[1], reverse=True))
 
     #GET K NEIGHBORS: 
-    similarity_30neighbors = dict(list(sorted_similarity.items())[:30])
+    similarity_30neighbors = dict(list(sorted_similarity.items())[:numRecom])
 
     #Ahora hay que calcular el rui (u=usuario test, i=poi)
     #rui = sum w_uv * r_vi
@@ -117,17 +106,9 @@ def knnAlgorithm(trainset, user_test):
 
     pois_recommended= dict(list(dictionary_scores_sorted.items())[:30])
 
-    
-    return pois_recommended
-
-
-
-
-
-
-
-
-
+    with open("algorithms/KNNRecommendations_user_" + str(user_test) + "_k" + str(numRecom) + ".txt", "w") as file:
+            for i, (poi, score) in enumerate(pois_recommended.items()):
+                file.write(f"{i}\t{poi}\t{score}\n")
 
 
 

@@ -14,7 +14,7 @@ def popularityAlgorithm(scores,pois, user, numRecom):
     pois_sorted = dict(sorted(validos.items(),key=lambda x: x[1], reverse=True))
 
      # Return top 30 POIs with visit counts
-    pois_top30 = dict(list(pois_sorted.items())[:30])
+    pois_top30 = dict(list(pois_sorted.items())[:numRecom])
 
     with open("algorithms//PopularityRecommendations_user" + user + ".txt", "w") as file:
         for i, (poi, visits) in enumerate(pois_top30.items()):
