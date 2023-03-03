@@ -4,6 +4,7 @@ def readTrain(trainset):
     pois ={}
     scores={}
 
+    city = trainset[(trainset.index("/")+1):trainset.index("_")]
 
     with open(trainset) as file2:
         for line in file2:
@@ -21,4 +22,4 @@ def readTrain(trainset):
             else:
                 scores[venue_id] =1
 
-    return pois, scores 
+    return pois, scores , city

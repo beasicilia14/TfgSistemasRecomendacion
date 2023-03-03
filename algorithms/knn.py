@@ -1,9 +1,10 @@
 import math 
 
-
 def readknn(trainset):
     user_poi_scores = {}
     userSquaredSum = {} 
+    city = trainset[(trainset.index("/")+1):trainset.index("_")]
+
     with open(trainset) as train:
             for line in train:
                 split_line =line.split("\t")
@@ -27,12 +28,12 @@ def readknn(trainset):
                 else:
                     userSquaredSum[int(user_id)] += int(score.strip())**2
     
-    return userSquaredSum, user_poi_scores
+    return userSquaredSum, user_poi_scores, city
 
 
 
 
-def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom): 
+def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom,city): 
         
     similarity_scores  ={}
 
@@ -43,7 +44,6 @@ def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom):
         user_visited = user_poi_scores[user_test]
     else:
         user_visited =[]
-
 
     #CALCULANDO SIMILITUD CON CADA UNO DE LOS USUARIOS. 
 
@@ -73,7 +73,7 @@ def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom):
     sorted_similarity = dict(sorted(similarity_scores.items(), key=lambda item: item[1], reverse=True))
 
     #GET K NEIGHBORS: 
-    similarity_30neighbors = dict(list(sorted_similarity.items())[:numRecom])
+    similarity_kneighbors = dict(list(sorted_similarity.items())[:numRecom])
 
     #Ahora hay que calcular el rui (u=usuario test, i=poi)
     #rui = sum w_uv * r_vi
@@ -86,9 +86,9 @@ def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom):
     #if poi_id in diccionario, sumo rating de ese usuario. 
     dictionary_scores ={} #poi:totalscore
 
-    for user_train in similarity_30neighbors: 
+    for user_train in similarity_kneighbors: 
         pois_user_train = user_poi_scores[user_train]
-        weight=similarity_30neighbors[user_train]
+        weight=similarity_kneighbors[user_train]
         
         for poi in pois_user_train: 
             if poi in dictionary_scores: 
@@ -106,9 +106,10 @@ def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom):
 
     pois_recommended= dict(list(dictionary_scores_sorted.items())[:30])
 
-    with open("algorithms/KNNRecommendations_user_" + str(user_test) + "_k" + str(numRecom) + ".txt", "w") as file:
-            for i, (poi, score) in enumerate(pois_recommended.items()):
-                file.write(f"{i}\t{poi}\t{score}\n")
-
+    with open("algorithms//Recommendations//KNNRecommendations_k" + str(numRecom) + city + ".txt", "a") as file:
+            index=1
+            for (poi, score) in pois_recommended.items():
+                file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
+                index+=1
 
 

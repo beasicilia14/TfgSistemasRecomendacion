@@ -3,7 +3,7 @@
 #CALCULAR SCORE DE TODOS LOS PUNTOS DE INTERÉS EN TRAIN. 
 #Nº Veces que un POI ha sido visitado por gente distinta 
 
-def popularityAlgorithm(scores,pois, user, numRecom): 
+def popularityAlgorithm(scores,pois, user, numRecom, city): 
     validos={}
     #scores es diccionario poi_id:score
     user_visited=pois[user]
@@ -16,6 +16,8 @@ def popularityAlgorithm(scores,pois, user, numRecom):
      # Return top 30 POIs with visit counts
     pois_top30 = dict(list(pois_sorted.items())[:numRecom])
 
-    with open("algorithms//PopularityRecommendations_user" + user + ".txt", "w") as file:
-        for i, (poi, visits) in enumerate(pois_top30.items()):
-            file.write(f"{i}\t{poi}\t{visits}\n")
+    with open("algorithms//Recommendations//PopularityRecommendations" + city + ".txt", "a") as file:
+        index=1
+        for (poi, visits) in pois_top30.items():
+            file.write(f"{user}\t{index}\t{poi}\t{visits}\n")
+            index+=1

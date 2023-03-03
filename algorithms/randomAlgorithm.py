@@ -4,40 +4,10 @@
 
 import random
 
-def readTrainSet(validationset, trainset, user, numRecom):
-    pois = {}
-
-    # Add POIs from testset that user has not visited
-    with open(trainset) as train:
-        for line in train:
-            split_line =line.split("\t")
-            user_id=split_line[0]
-            venue_id =split_line[1]
-
-            #check para no recomendar POI que el user ya haya ido
-            #if user_id != user:
-            if user_id not in pois.keys(): 
-                pois[user_id] = [venue_id]
-            else:
-                pois[user_id].append(venue_id)
-                
-    # Add POIs from validationset that user has not visited
-    with open(validationset) as validation:
-        for line in validation:
-            split_line =line.split("\t")
-            user_id=split_line[0]
-            venue_id =split_line[1]
-
-            if user_id not in pois.keys(): 
-                pois[user_id] = [venue_id]
-            else:
-                pois[user_id].append(venue_id)
-
-    return pois
 
 #devuelve user:poi1, poi2, poi3
 
-def randomAlgorithm(pois,user, numRecom): 
+def randomAlgorithm(pois,user, numRecom,city): 
 
     validos = set()
     for k,v in pois.items(): 
@@ -49,12 +19,12 @@ def randomAlgorithm(pois,user, numRecom):
     random_items = random.sample(pois_list, numRecom)
     #random.shuffle(pois_list)
     # Return first n POIs
-    file_name = "algorithms//RandomRecommendations_user" + user + ".txt"
-    file = open(file_name, 'w')
-    ind=0
+    file_name = "algorithms//Recommendations//RandomRecommendations_" + city + ".txt"
+    file = open(file_name, 'a')
+    ind=1
     
     for i in random_items:
-        file.write(str(ind)+ "\t" + str(i) + "\n")
+        file.write(str(user)+ "\t" + str(ind)+ "\t" + str(i) + "\n")
         ind+=1
 
 
