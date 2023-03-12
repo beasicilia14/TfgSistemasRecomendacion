@@ -104,7 +104,7 @@ def knnAlgorithm(userSquaredSum, user_poi_scores, user_test,numRecom,city):
     #AHORA DE TODOS LOS DISPONIBLES COJO LOS 20 PRIMEROS. 
     dictionary_scores_sorted = dict(sorted(dictionary_scores.items(), key=lambda item: item[1], reverse=True))
 
-    pois_recommended= dict(list(dictionary_scores_sorted.items())[:30])
+    pois_recommended= dict(list(dictionary_scores_sorted.items())[:numRecom])
 
     with open("algorithms//Recommendations//KNNRecommendations_k" + str(numRecom) + city + ".txt", "a") as file:
             index=1
