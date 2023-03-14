@@ -6,7 +6,11 @@
 def popularityAlgorithm(scores,pois, user, numRecom, city): 
     validos={}
     #scores es diccionario poi_id:score
-    user_visited=pois[user]
+    if user in pois.keys(): 
+        user_visited=pois[user]
+    else: 
+        user_visited = []
+
     for i,v in scores.items(): 
         if i not in user_visited: 
             validos[i] = v

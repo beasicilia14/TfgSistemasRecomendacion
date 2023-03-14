@@ -19,7 +19,7 @@ def randomAlgorithm(pois,user, numRecom,city):
     random_items = random.sample(pois_list, numRecom)
     #random.shuffle(pois_list)
     # Return first n POIs
-    file_name = "algorithms//Recommendations//RandomRecommendations_" + city + ".txt"
+    file_name = "algorithms//Recommendations//RandomRecommendations" + city + ".txt"
     file = open(file_name, 'a')
     ind=1
     
