@@ -3,11 +3,11 @@
 import pandas as pd
 
 #FILTERING CATEGORIAS
-df_tokyo = pd.read_csv("dataProcessing//intermediateFiles//Tokyo_JP.txt", names = ["UserID", "VenueID", "Category", "TimeStamp"], sep="\t")
+df_tokyo = pd.read_csv("dataProcessing//intermediateFiles//Tokyo_JP.txt", names = ["UserID", "VenueID", "Category", "TimeStamp", "Lat", "Lon"], sep="\t")
 categories_tokyo = sorted(df_tokyo.Category.unique())
 print(categories_tokyo)
 
-df_nyc = pd.read_csv("dataProcessing//intermediateFiles//NewYork_US.txt", names = ["UserID", "VenueID", "Category", "TimeStamp"], sep="\t")
+df_nyc = pd.read_csv("dataProcessing//intermediateFiles//NewYork_US.txt", names = ["UserID", "VenueID", "Category", "TimeStamp", "Lat", "Lon"], sep="\t")
 categories_nyc = sorted(df_nyc.Category.unique())
 print(categories_nyc)
 
@@ -16,14 +16,14 @@ aceptadas_nyc = ['Accessories Store', 'Afghan Restaurant', 'African Restaurant',
 
 #LINE OF TOKYO 295	96292	Cosmetics Shop	1333491438.0
 Tokyo_JP_Filtered = open('dataProcessing//intermediateFiles//Tokyo_JPFiltered.txt', 'w')  # fichero a escribir
-with open("dataProcessing//Tokyo_JP.txt") as ficheropois:
+with open("dataProcessing//intermediateFiles//Tokyo_JP.txt") as ficheropois:
     for line_poi in ficheropois:
         
         split_line = line_poi.split("\t")
         category = split_line[2]
         
         if category in aceptadas_tokyo:
-            Tokyo_JP_Filtered.write(split_line[0] + '\t'+ split_line[1] + '\t'+ split_line[2] + '\t' + split_line[3])
+            Tokyo_JP_Filtered.write(split_line[0] + '\t'+ split_line[1] + '\t'+ split_line[2] + '\t' + split_line[3] + '\t' + split_line[4] + "\t" + split_line[5])
 
         else: 
             pass        
@@ -31,14 +31,14 @@ Tokyo_JP_Filtered.close()
 
 
 Nyc_US_Filtered = open('dataProcessing//intermediateFiles//NewYork_USFiltered.txt', 'w')  # fichero a escribir
-with open("dataProcessing//NewYork_US.txt") as ficheropois:
+with open("dataProcessing//intermediateFiles//NewYork_US.txt") as ficheropois:
     for line_poi in ficheropois:
         
         split_line = line_poi.split("\t")
         category = split_line[2]
         
         if category in aceptadas_nyc:
-            Nyc_US_Filtered.write(split_line[0] + '\t'+ split_line[1] + '\t'+ split_line[2] + '\t' + split_line[3])
+            Nyc_US_Filtered.write(split_line[0] + '\t'+ split_line[1] + '\t'+ split_line[2] + '\t' + split_line[3]  + '\t' + split_line[4] + "\t" + split_line[5])
 
         else: 
             pass 

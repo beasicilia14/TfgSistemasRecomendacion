@@ -96,8 +96,8 @@ with open("datasets\\foursquare\\dataset_TIST2015_Checkins.txt") as ficherocheck
 
 
                 idnuevo = dicc[idfoursquare][0]
-                    #lat = dicc[idfoursquare][1]
-                    #lon = dicc[idfoursquare][2]
+                lat = dicc[idfoursquare][1]
+                lon = dicc[idfoursquare][2]
                 category = dicc[idfoursquare][3]
                 ciudad = dicc[idfoursquare][4]
 
@@ -107,11 +107,11 @@ with open("datasets\\foursquare\\dataset_TIST2015_Checkins.txt") as ficherocheck
 
                 if os.path.exists(fichero):
                     with open(fichero, "a") as fcities:
-                        fcities.write(str(userid) + '\t' + idnuevo + '\t' + category + '\t' + str(time) + '\n')
+                        fcities.write(str(userid) + '\t' + idnuevo + '\t' + category + '\t' + str(time) + '\t' + lat + '\t' + lon + '\n')
 
                 else:
                     with open(fichero, "w") as fcities:
-                        fcities.write(str(userid) + '\t' + idnuevo + '\t' + category + '\t' +str(time) + '\n')
+                        fcities.write(str(userid) + '\t' + idnuevo + '\t'+ category + '\t' +str(time) +  lat + '\t' + lon + '\t' + '\n')
 
 
             except: 

@@ -6,9 +6,12 @@ for i in cities:
     file_name  = "dataProcessing\\intermediateFiles\\" + i + "finalVersion.txt" 
 
     datos = pd.read_csv(file_name, sep='\t', header=None)
-    datos.iloc[:, 2] = datos.iloc[:, 2].astype(float)
+   
+    
+
+    datos.iloc[:, 3] = datos.iloc[:, 3].astype(float)
     #sorting by timestamp, menor a mayor. 
-    datos_ordered = datos.sort_values(2)
+    datos_ordered = datos.sort_values(3)
 
     #TRAIN:
     n_records_train = int(0.7 * len(datos_ordered.index))

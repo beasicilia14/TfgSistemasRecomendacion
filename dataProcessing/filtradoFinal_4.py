@@ -7,7 +7,7 @@ for i in cities:
     dicc_pois ={}
     dicc_users_aceptados = {}
 
-    file_name = "dataProcessing\\intermediateFiles\\" + i + "Filtered&Grouped.txt"
+    file_name = "dataProcessing\\intermediateFiles\\" + i + "Filtered.txt"
 
     with open(file_name) as file: 
         for line_city in file:
