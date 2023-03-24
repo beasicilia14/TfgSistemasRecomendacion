@@ -10,7 +10,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 #haversine devuelve distancia en kilómetros 
-ciudades = ("New York", "Tokyo")
+ciudades = ("NewYork_US", "Tokyo_JP")
 dicc_ciudades = {}
 dicc_asignacion = {}
 
@@ -23,8 +23,8 @@ with open("datasets\\foursquare\\dataset_TIST2015_Cities.txt") as file:
             dicc_ciudades[city] = [split_line[1], split_line[2]]
 
 
-filePOIs_Nyc = open("dataProcessingGowalla\\ficheroNewYork.txt", "a")
-filePOIs_Tky = open("dataProcessingGowalla\\ficheroTokyo.txt", "a")
+filePOIs_Nyc = open("dataProcessingGowalla\\ficheroNewYork_US.txt", "a")
+filePOIs_Tky = open("dataProcessingGowalla\\ficheroTokyo_JP.txt", "a")
 
 with open("datasets\\gowalla\\Gowalla_totalCheckins.txt") as file2: 
     for line in file2: 
@@ -37,7 +37,7 @@ with open("datasets\\gowalla\\Gowalla_totalCheckins.txt") as file2:
             dist = haversine(float(latitud_poi), float(longitud_poi), float(dicc_ciudades[city][0]), float(dicc_ciudades[city][1]))
             if dist <30: 
                 ciudad_asignada = city 
-                if ciudad_asignada == "New York": 
+                if ciudad_asignada == "NewYork_US": 
                     filePOIs_Nyc.write(str(split_line[0]) + '\t' + str(split_line[1]) + '\t' + str(split_line[2]) + '\t' + str(split_line[3]) + "\t" + str(split_line[4]) )
                 else:
                     filePOIs_Tky.write(str(split_line[0]) + '\t' + str(split_line[1]) + '\t' + str(split_line[2]) + '\t' + str(split_line[3]) + "\t" + str(split_line[4]) )  

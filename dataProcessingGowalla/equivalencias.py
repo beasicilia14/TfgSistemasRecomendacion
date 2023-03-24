@@ -10,9 +10,9 @@ def haversine(lat1, lon1, lat2, lon2):
 
 cities = ("NewYork_US", "Tokyo_JP")
 
-for i in cities: 
-    file_namef  = "dataProcessing\\intermediateFiles\\" + i + "finalVersion.txt" 
-    city = i.split("_")[0]
+for city in cities: 
+    file_namef  = "dataProcessing\\intermediateFiles\\" + city + "finalVersion.txt" 
+    
     dicc_gowalla = {}
     dicc_foursquare = {}
 

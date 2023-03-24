@@ -1,4 +1,4 @@
-cities = ("NewYork", "Tokyo")
+cities = ("NewYork_US", "Tokyo_JP")
 
 for city in cities: 
     dicc_gowalla = {}
