@@ -19,27 +19,11 @@ from randomAlgorithm import randomAlgorithm
 from readTrain import readTrain
 
 pois, scores, city = readTrain("subsets/NewYork_US_train.txt")
-#user_poi_scores, userSquaredSum, city= readknn("subsets/NewYork_US_train.txt")
+user_poi_scores, userSquaredSum, city= readknn("subsets/NewYork_US_train.txt")
 
 with open("subsets/NewYork_US_validation.txt") as filevalidation: 
     for line in filevalidation: 
-        split_line = line.split("\t")
-        user = int(split_line[0])
-        #0: user
-        #1: poi_id
-        #2: timestamp 
-        #3: score 
+        line_split = line.split("\t")
+        user = line_split[0]
 
-        randomAlgorithm(pois,user, 20, city)
-        #popularityAlgorithm(scores,pois, user, 20, city)
-        #knnAlgorithm(user_poi_scores,userSquaredSum,user,20,city)
-        #knnAlgorithm(user_poi_scores,userSquaredSum,user,30,city)
-        #knnAlgorithm(user_poi_scores,userSquaredSum,user,60,city)
-
-
-
-
-
-
-        
-
+        knnAlgorithm(user_poi_scores,userSquaredSum,"187542",20,city)
