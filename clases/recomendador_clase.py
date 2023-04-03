@@ -1,5 +1,6 @@
 import random
 import math 
+from funciones import * 
 
 class Recomendador: 
 
@@ -44,7 +45,7 @@ class Random(Recomendador):
         random_items = random.sample(pois_list, numeroRecomendaciones)
         #random.shuffle(pois_list)
         # Return first n POIs
-        file_name = path_destino + "\\RandomRecom" + city + ".txt"
+        file_name = path_destino + "//RandomRecom" + city + ".txt"
         file = open(file_name, 'a')
         ind=1
         
@@ -110,8 +111,9 @@ class Knn(Recomendador):
         return userSquaredSum, user_poi_scores, city
 
 
-    def recomendar(self, userSquaredSum, user_poi_scores, user_test,numRecom,city, path_destino): 
+    def recomendar(self, trainset, user_test,numRecom, path_destino): 
         
+        userSquaredSum, user_poi_scores, city = self.readknn(trainset)
         similarity_scores  ={}
 
         #Rating numerador --> sumatorio rui*rvi
@@ -190,11 +192,13 @@ class Knn(Recomendador):
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
                     index+=1
 
+
 class KnnMidpoint(Recomendador):
     
     def readKnnMidpoint(self, trainset):
         user_dicc = {}
         pois_dicc = {}
+        city = trainset[(trainset.index("/")+1):trainset.index("_")]
 
         with open(trainset) as file: 
             for line in file: 
@@ -222,7 +226,7 @@ class KnnMidpoint(Recomendador):
                     pois_dicc[poi_id] = [lon, lat]
                 else: 
                     pass 
-        return user_dicc, pois_dicc 
+        return user_dicc, pois_dicc , city
 
 
     def knnMidpointCalc(self, user_dicc, pois_dicc): 
@@ -259,19 +263,10 @@ class KnnMidpoint(Recomendador):
         return dicc_midpoint 
 
 
-    def haversine(self, lat1, lon1, lat2, lon2):
-        rad=math.pi/180
-        dlat=lat2-lat1
-        dlon=lon2-lon1
-        R=6372.795477598
-        a=(math.sin(rad*dlat/2))**2 + math.cos(rad*lat1)*math.cos(rad*lat2)*(math.sin(rad*dlon/2))**2
-        distancia=2*R*math.asin(math.sqrt(a))
-        return distancia
-
-
+    
     def recomendar(self, trainset, user_test, numRec, path): 
         
-        user_dicc, pois_dicc = self.readKnnMidpoint(trainset)
+        user_dicc, pois_dicc , city= self.readKnnMidpoint(trainset)
 
         dicc_midpoints = self.knnMidpointCalc(user_dicc, pois_dicc)
 
@@ -291,11 +286,16 @@ class KnnMidpoint(Recomendador):
                     midpoint_train_lon = dicc_midpoints[i][0]
                     midpoint_train_lat = dicc_midpoints[i][1]
 
-                    dist = self.haversine(lat_midpoint, lon_midpoint, midpoint_train_lat, midpoint_train_lon)
+                    dist = haversine(lat_midpoint, lon_midpoint, midpoint_train_lat, midpoint_train_lon)
                     
+                    if dist==0: 
+                        dist = 0.001 
+                        dicc_scores[i] = 1/dist 
+                    else: 
+                        dicc_scores[i] = 1/dist 
                     #print(dist)
                     
-                    dicc_scores[i] = 1/dist 
+                    
         
         sorted_similarity = dict(sorted(dicc_scores.items(), key=lambda item: item[1], reverse=True))
         
@@ -330,10 +330,160 @@ class KnnMidpoint(Recomendador):
         #normalizar el score ? 
 
 
-        with open(path + "//KNN_MIDPOINT" + str(numRec) + ".txt", "a") as file:
+        with open(path + "//KNN_MidpointRecommendations_k" + str(numRec) + city + ".txt", "a") as file:
                 index=1
                 for (poi, score) in pois_recommended.items():
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
                     index+=1
 
 
+
+
+
+class Hybrid(Recomendador): 
+  
+    
+    def recomendar(self, trainset, user_test, numRec, path): 
+        objeto_pop = Popularity()
+        objeto_knn = Knn()
+        objeto_knnmidpoint = KnnMidpoint()
+        pois, scores, city = objeto_pop.readTrain("subsets/NewYork_US_train.txt")
+
+        path_temp = "clases//intermediate"
+        objeto_pop.recomendar(pois,user_test, 20, city, scores,path_temp)
+        objeto_knn.recomendar(trainset, user_test, numRec, path_temp)
+        objeto_knnmidpoint.recomendar(trainset, user_test, numRec, path_temp)
+
+        file_rec_pop = path_temp + "//PopularityRecommendations" + city + ".txt"
+
+        file_rec_knn = path_temp + "//KNNRecommendations_k" + str(numRec) + city + ".txt"
+
+        file_rec_midpoint = path_temp + "//KNN_MidpointRecommendations_k" + str(numRec) + city + ".txt"
+
+
+        dicc_pop = {}
+        dicc_knn ={}
+        dicc_mid = {}
+
+        with open(file_rec_pop) as file_pop: 
+            for line in file_pop: 
+                line_split = line.split("\t")
+                poi_id = line_split[2]
+                score = line_split[3].split("\n")[0]
+
+                dicc_pop[poi_id]= float(score)
+        
+        with open(file_rec_knn) as file_knn: 
+            for line in file_knn: 
+                line_split = line.split("\t")
+                poi_id = line_split[2]
+                score = line_split[3].split("\n")[0]
+
+                dicc_knn[poi_id]= float(score)
+
+        with open(file_rec_midpoint) as file_mid: 
+            for line in file_mid: 
+                line_split = line.split("\t")
+                poi_id = line_split[2]
+                score = line_split[3].split("\n")[0]
+                dicc_mid[poi_id]= float(score)
+    
+        dicc_pop= normalizeDicc(dicc_pop)
+        dicc_knn = normalizeDicc(dicc_knn)
+        dicc_mid = normalizeDicc(dicc_mid)
+
+        
+
+        dicc_total = {}
+
+        for i in dicc_pop: 
+            dicc_total[i] = dicc_pop[i]
+
+        for i in dicc_knn: 
+            if i in dicc_total: 
+                dicc_total[i] += dicc_knn[i]
+            else: 
+                dicc_total[i] = dicc_knn[i]
+        
+        for i in dicc_mid: 
+            if i in dicc_total: 
+                dicc_total[i] += dicc_mid[i]
+            else: 
+                dicc_total[i] = dicc_mid[i]
+
+        #cogemos top 20 pois según score 
+        
+    #AHORA DE TODOS LOS DISPONIBLES COJO LOS 20 PRIMEROS. 
+        dictionary_top20 = dict(sorted(dicc_total.items(), key=lambda item: item[1], reverse=True))
+
+        pois_recommended= dict(list(dictionary_top20.items())[:numRec])
+
+        with open(path + "//HybridRecommendation" + city + ".txt", "a") as file:
+                index=1
+                for (poi, score) in pois_recommended.items():
+                    file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
+                    index+=1
+
+    def Recomendar2(file_rec_pop, file_rec_knn, file_rec_midpoint, path, city, user_test, numRec): 
+        dicc_pop = {}
+        dicc_knn ={}
+        dicc_mid = {}
+
+        with open(file_rec_pop) as file_pop: 
+            for line in file_pop: 
+                line_split = line.split("\t")
+                poi_id = line_split[2]
+                score = line_split[3].split("\n")[0]
+
+                dicc_pop[poi_id]= float(score)
+        
+        with open(file_rec_knn) as file_knn: 
+            for line in file_knn: 
+                line_split = line.split("\t")
+                poi_id = line_split[2]
+                score = line_split[3].split("\n")[0]
+
+                dicc_knn[poi_id]= float(score)
+
+        with open(file_rec_midpoint) as file_mid: 
+            for line in file_mid: 
+                line_split = line.split("\t")
+                poi_id = line_split[2]
+                score = line_split[3].split("\n")[0]
+                dicc_mid[poi_id]= float(score)
+    
+        dicc_pop= normalizeDicc(dicc_pop)
+        dicc_knn = normalizeDicc(dicc_knn)
+        dicc_mid = normalizeDicc(dicc_mid)
+
+        
+
+        dicc_total = {}
+
+        for i in dicc_pop: 
+            dicc_total[i] = dicc_pop[i]
+
+        for i in dicc_knn: 
+            if i in dicc_total: 
+                dicc_total[i] += dicc_knn[i]
+            else: 
+                dicc_total[i] = dicc_knn[i]
+        
+        for i in dicc_mid: 
+            if i in dicc_total: 
+                dicc_total[i] += dicc_mid[i]
+            else: 
+                dicc_total[i] = dicc_mid[i]
+
+        #cogemos top 20 pois según score 
+        
+    #AHORA DE TODOS LOS DISPONIBLES COJO LOS 20 PRIMEROS. 
+        dictionary_top20 = dict(sorted(dicc_total.items(), key=lambda item: item[1], reverse=True))
+
+        pois_recommended= dict(list(dictionary_top20.items())[:numRec])
+
+        with open(path + "//HybridRecommendation" + city + ".txt", "a") as file:
+                index=1
+                for (poi, score) in pois_recommended.items():
+                    file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
+                    index+=1
