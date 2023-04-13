@@ -111,7 +111,7 @@ class Knn(Recomendador):
         return userSquaredSum, user_poi_scores, city
 
 
-    def recomendar(self, trainset, user_test,numRecom, path_destino): 
+    def recomendar(self, trainset, user_test,numRecom,k, path_destino): 
         
         userSquaredSum, user_poi_scores, city = self.readknn(trainset)
         similarity_scores  ={}
@@ -153,7 +153,7 @@ class Knn(Recomendador):
         sorted_similarity = dict(sorted(similarity_scores.items(), key=lambda item: item[1], reverse=True))
 
         #GET K NEIGHBORS: 
-        similarity_kneighbors = dict(list(sorted_similarity.items())[:numRecom])
+        similarity_kneighbors = dict(list(sorted_similarity.items())[:k])
 
         #Ahora hay que calcular el rui (u=usuario test, i=poi)
         #rui = sum w_uv * r_vi
@@ -186,7 +186,7 @@ class Knn(Recomendador):
 
         pois_recommended= dict(list(dictionary_scores_sorted.items())[:numRecom])
 
-        with open(path_destino + "//KNNRecommendations_k" + str(numRecom) + city + ".txt", "a") as file:
+        with open(path_destino + "//KNNRecommendations_k" + str(k) + city + ".txt", "a") as file:
                 index=1
                 for (poi, score) in pois_recommended.items():
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
@@ -264,7 +264,7 @@ class KnnMidpoint(Recomendador):
 
 
     
-    def recomendar(self, trainset, user_test, numRec, path): 
+    def recomendar(self, trainset, user_test, numRec, k, path): 
         
         user_dicc, pois_dicc , city= self.readKnnMidpoint(trainset)
 
@@ -300,7 +300,7 @@ class KnnMidpoint(Recomendador):
         sorted_similarity = dict(sorted(dicc_scores.items(), key=lambda item: item[1], reverse=True))
         
         #GET K NEIGHBORS: 
-        similarity_kneighbors = dict(list(sorted_similarity.items())[:numRec])
+        similarity_kneighbors = dict(list(sorted_similarity.items())[:k])
 
         #print(similarity_kneighbors)
 
@@ -330,35 +330,36 @@ class KnnMidpoint(Recomendador):
         #normalizar el score ? 
 
 
-        with open(path + "//KNN_MidpointRecommendations_k" + str(numRec) + city + ".txt", "a") as file:
+        with open(path + "//KNN_MidpointRecommendations_k" + str(k) + city + ".txt", "a") as file:
                 index=1
                 for (poi, score) in pois_recommended.items():
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
                     index+=1
-
-
 
 
 
 class Hybrid(Recomendador): 
   
     
-    def recomendar(self, trainset, user_test, numRec, path): 
+    def recomendar(self, trainset, user_test, numRec, k, path): 
         objeto_pop = Popularity()
         objeto_knn = Knn()
         objeto_knnmidpoint = KnnMidpoint()
         pois, scores, city = objeto_pop.readTrain("subsets/NewYork_US_train.txt")
 
+        #pillando las rec hechas antes o ?
+        #
+        
         path_temp = "clases//intermediate"
         objeto_pop.recomendar(pois,user_test, 20, city, scores,path_temp)
-        objeto_knn.recomendar(trainset, user_test, numRec, path_temp)
-        objeto_knnmidpoint.recomendar(trainset, user_test, numRec, path_temp)
+        objeto_knn.recomendar(trainset, user_test, numRec, k,  path_temp)
+        objeto_knnmidpoint.recomendar(trainset, user_test, numRec, k,  path_temp)
 
         file_rec_pop = path_temp + "//PopularityRecommendations" + city + ".txt"
 
-        file_rec_knn = path_temp + "//KNNRecommendations_k" + str(numRec) + city + ".txt"
+        file_rec_knn = path_temp + "//KNNRecommendations_k" + str(k) + city + ".txt"
 
-        file_rec_midpoint = path_temp + "//KNN_MidpointRecommendations_k" + str(numRec) + city + ".txt"
+        file_rec_midpoint = path_temp + "//KNN_MidpointRecommendations_k" + str(k) + city + ".txt"
 
 
         dicc_pop = {}
@@ -372,44 +373,60 @@ class Hybrid(Recomendador):
                 score = line_split[3].split("\n")[0]
 
                 dicc_pop[poi_id]= float(score)
+            
+        file_pop.close()
+        with open(file_rec_pop, 'w') as file_pop:
+            file_pop.write('')
         
         with open(file_rec_knn) as file_knn: 
             for line in file_knn: 
                 line_split = line.split("\t")
                 poi_id = line_split[2]
                 score = line_split[3].split("\n")[0]
-
                 dicc_knn[poi_id]= float(score)
-
+            
+        file_knn.close()
+        with open(file_rec_knn, 'w') as file_knn:
+            file_knn.write('')
+        
         with open(file_rec_midpoint) as file_mid: 
             for line in file_mid: 
                 line_split = line.split("\t")
                 poi_id = line_split[2]
                 score = line_split[3].split("\n")[0]
                 dicc_mid[poi_id]= float(score)
-    
+       
+        file_mid.close()
+        with open(file_rec_midpoint, 'w') as file_mid:
+            file_mid.write('')
+        
         dicc_pop= normalizeDicc(dicc_pop)
-        dicc_knn = normalizeDicc(dicc_knn)
-        dicc_mid = normalizeDicc(dicc_mid)
+
+        if dicc_knn != {}: 
+            dicc_knn = normalizeDicc(dicc_knn)
+        
+        if dicc_mid != {}: 
+            dicc_mid = normalizeDicc(dicc_mid)
 
         
-
         dicc_total = {}
 
         for i in dicc_pop: 
             dicc_total[i] = dicc_pop[i]
 
-        for i in dicc_knn: 
-            if i in dicc_total: 
-                dicc_total[i] += dicc_knn[i]
-            else: 
-                dicc_total[i] = dicc_knn[i]
+        if dicc_knn != {}:
+            for i in dicc_knn: 
+                if i in dicc_total: 
+                    dicc_total[i] += dicc_knn[i]
+                else: 
+                    dicc_total[i] = dicc_knn[i]
         
-        for i in dicc_mid: 
-            if i in dicc_total: 
-                dicc_total[i] += dicc_mid[i]
-            else: 
-                dicc_total[i] = dicc_mid[i]
+        if dicc_mid !={}:
+            for i in dicc_mid: 
+                if i in dicc_total: 
+                    dicc_total[i] += dicc_mid[i]
+                else: 
+                    dicc_total[i] = dicc_mid[i]
 
         #cogemos top 20 pois según score 
         
@@ -418,72 +435,12 @@ class Hybrid(Recomendador):
 
         pois_recommended= dict(list(dictionary_top20.items())[:numRec])
 
+
         with open(path + "//HybridRecommendation" + city + ".txt", "a") as file:
                 index=1
                 for (poi, score) in pois_recommended.items():
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
                     index+=1
 
-    def Recomendar2(file_rec_pop, file_rec_knn, file_rec_midpoint, path, city, user_test, numRec): 
-        dicc_pop = {}
-        dicc_knn ={}
-        dicc_mid = {}
-
-        with open(file_rec_pop) as file_pop: 
-            for line in file_pop: 
-                line_split = line.split("\t")
-                poi_id = line_split[2]
-                score = line_split[3].split("\n")[0]
-
-                dicc_pop[poi_id]= float(score)
-        
-        with open(file_rec_knn) as file_knn: 
-            for line in file_knn: 
-                line_split = line.split("\t")
-                poi_id = line_split[2]
-                score = line_split[3].split("\n")[0]
-
-                dicc_knn[poi_id]= float(score)
-
-        with open(file_rec_midpoint) as file_mid: 
-            for line in file_mid: 
-                line_split = line.split("\t")
-                poi_id = line_split[2]
-                score = line_split[3].split("\n")[0]
-                dicc_mid[poi_id]= float(score)
     
-        dicc_pop= normalizeDicc(dicc_pop)
-        dicc_knn = normalizeDicc(dicc_knn)
-        dicc_mid = normalizeDicc(dicc_mid)
 
-        
-
-        dicc_total = {}
-
-        for i in dicc_pop: 
-            dicc_total[i] = dicc_pop[i]
-
-        for i in dicc_knn: 
-            if i in dicc_total: 
-                dicc_total[i] += dicc_knn[i]
-            else: 
-                dicc_total[i] = dicc_knn[i]
-        
-        for i in dicc_mid: 
-            if i in dicc_total: 
-                dicc_total[i] += dicc_mid[i]
-            else: 
-                dicc_total[i] = dicc_mid[i]
-
-        #cogemos top 20 pois según score 
-        
-    #AHORA DE TODOS LOS DISPONIBLES COJO LOS 20 PRIMEROS. 
-        dictionary_top20 = dict(sorted(dicc_total.items(), key=lambda item: item[1], reverse=True))
-
-        pois_recommended= dict(list(dictionary_top20.items())[:numRec])
-
-        with open(path + "//HybridRecommendation" + city + ".txt", "a") as file:
-                index=1
-                for (poi, score) in pois_recommended.items():
-                    file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
-                    index+=1

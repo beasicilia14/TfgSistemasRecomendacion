@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Metrica_Rec(ABC):
+class Metrica_Test(ABC):
     def __init__(self, recommendations_path, test_data_path, cutoff):
         self.recommendations_path = recommendations_path
         self.test_data_path = test_data_path
@@ -10,7 +10,7 @@ class Metrica_Rec(ABC):
     def calculate(self):
         pass
 
-class AggregateDiversity(Metrica_Rec): 
+class AggregateDiversity(Metrica_Test): 
 
     def __init__(self, recommendations_path, test_data_path, cutoff):
         super().__init__(recommendations_path, test_data_path, cutoff)
@@ -36,7 +36,7 @@ class AggregateDiversity(Metrica_Rec):
                 
         return len(pois_set) 
     
-class Coverage(Metrica_Rec): 
+class Coverage(Metrica_Test): 
     def __init__(self, recommendations_path, test_data_path, cutoff):
         super().__init__(recommendations_path, test_data_path, cutoff)
 
