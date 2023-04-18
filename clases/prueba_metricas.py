@@ -27,7 +27,7 @@ rec_paths = [
     "clases//Recomendaciones//KNNRecommendations_K20NewYork.txt", 
     "clases//Recomendaciones//KNNRecommendations_K30NewYork.txt", 
     "clases//Recomendaciones//KNNRecommendations_K60NewYork.txt", 
-    "clases//Recomendaciones//KNN_MidpointRecommendations_K20NewYork.txt",
+
     "clases//Recomendaciones//KNN_MidpointRecommendations_K30NewYork.txt"]
 
 
@@ -35,7 +35,7 @@ validation_data_path = "subsets//NewYork_US_validation.txt"
 train_data_path = "subsets/NewYork_US_train.txt"
 cutoff = 10
 
-algorithm_names = ["Random", "Popularity", "K20", "K30",  "K60", "K20 Midpoint", "K30 Midpoint"]
+algorithm_names = ["Random", "Popularity", "K20", "K30",  "K60","K30 Midpoint"]
 
 data = {"Algorithm": [], "Precision": [], "Recall": [], "epc": [], "AggDiversity": [], "Coverage": []}
 

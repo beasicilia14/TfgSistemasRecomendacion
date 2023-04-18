@@ -206,15 +206,14 @@ class KnnMidpoint(Recomendador):
                 #0: user_id
                 #1: poi_id 
                 #2: timestamp 
-                #3: lon 
-                #4: lat 
+                #3: lat 
+                #4: lon
                 #5: score 
 
                 user_id = line_split[0]
                 poi_id = line_split[1]
-                lon = line_split[3]
-                lat = line_split[4]
-
+                lat = line_split[3]
+                lon = line_split[4]
                 score = line_split[5].split("\n")[0]
                     
                 if user_id in user_dicc.keys(): 
@@ -223,7 +222,7 @@ class KnnMidpoint(Recomendador):
                     user_dicc[user_id] = {poi_id:int(score)}
                 
                 if poi_id not in pois_dicc.keys(): 
-                    pois_dicc[poi_id] = [lon, lat]
+                    pois_dicc[poi_id] = [lat, lon]
                 else: 
                     pass 
         return user_dicc, pois_dicc , city
@@ -238,8 +237,8 @@ class KnnMidpoint(Recomendador):
             y=0
             z=0
             for poi in pois_visited: 
-                lon = float(pois_dicc[poi][0])
-                lat = float(pois_dicc[poi][1])
+                lat= float(pois_dicc[poi][0])
+                lon = float(pois_dicc[poi][1])
                 
                 lon = lon * math.pi / 180 
                 lat = lat * math.pi / 180 
@@ -258,7 +257,7 @@ class KnnMidpoint(Recomendador):
 
             lon = lon*180 / math.pi
             lat = lat*180 /math.pi
-            dicc_midpoint[user] = [lon,lat]
+            dicc_midpoint[user] = [lat,lon]
         
         return dicc_midpoint 
 
@@ -277,14 +276,14 @@ class KnnMidpoint(Recomendador):
         if user_test in dicc_midpoints.keys(): 
             #le puedo hacer recomendaciones 
             user_midpoint = dicc_midpoints[user_test]
-            lon_midpoint = user_midpoint[0]
-            lat_midpoint = user_midpoint[1]
+            lat_midpoint = user_midpoint[0]
+            lon_midpoint = user_midpoint[1]
 
             for i in dicc_midpoints: 
                 if i != user_test: 
 
-                    midpoint_train_lon = dicc_midpoints[i][0]
-                    midpoint_train_lat = dicc_midpoints[i][1]
+                    midpoint_train_lat = dicc_midpoints[i][0]
+                    midpoint_train_lon = dicc_midpoints[i][1]
 
                     dist = haversine(lat_midpoint, lon_midpoint, midpoint_train_lat, midpoint_train_lon)
                     

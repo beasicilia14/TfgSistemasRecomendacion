@@ -27,9 +27,9 @@ with open("subsets/NewYork_US_validation.txt") as filevalidation:
         #knn
         #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 20, 60, "clases//Recomendaciones")
         #knn midpoint 
-        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 20, 30, "clases//Recomendaciones")
+        objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 20, 30, "clases//Recomendaciones")
         #hybrid 
-        objeto_hybrid.recomendar("subsets/NewYork_US_train.txt", user, 20, 30, "clases//Recomendaciones")
+        #objeto_hybrid.recomendar("subsets/NewYork_US_train.txt", user, 20, 30, "clases//Recomendaciones")
 
 
 
