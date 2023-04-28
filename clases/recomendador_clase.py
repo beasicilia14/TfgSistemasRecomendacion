@@ -49,6 +49,7 @@ class Random(Recomendador):
         file = open(file_name, 'a')
         ind=1
         
+        
         for i in random_items:
             file.write(str(usuario)+ "\t" + str(ind)+ "\t" + str(i) + "\n")
             ind+=1
@@ -77,6 +78,7 @@ class Popularity(Recomendador):
                 for (poi, visits) in pois_top30.items():
                     file.write(f"{usuario}\t{index}\t{poi}\t{visits}\n")
                     index+=1
+
 
 
 class Knn(Recomendador): 
@@ -215,12 +217,14 @@ class KnnMidpoint(Recomendador):
                 lat = line_split[3]
                 lon = line_split[4]
                 score = line_split[5].split("\n")[0]
-                    
+                
+                #dicc user: poi1, poi2, 
                 if user_id in user_dicc.keys(): 
                     user_dicc[user_id][poi_id] = int(score)
                 else: 
                     user_dicc[user_id] = {poi_id:int(score)}
                 
+                #dicc poi: lat lon 
                 if poi_id not in pois_dicc.keys(): 
                     pois_dicc[poi_id] = [lat, lon]
                 else: 
@@ -257,6 +261,8 @@ class KnnMidpoint(Recomendador):
 
             lon = lon*180 / math.pi
             lat = lat*180 /math.pi
+
+            #midpoint de cada usuario que está en train 
             dicc_midpoint[user] = [lat,lon]
         
         return dicc_midpoint 
@@ -266,6 +272,9 @@ class KnnMidpoint(Recomendador):
     def recomendar(self, trainset, user_test, numRec, k, path): 
         
         user_dicc, pois_dicc , city= self.readKnnMidpoint(trainset)
+
+        #user dicc: usuarios & pois 
+        #pois dicc : pois: lon, lat 
 
         dicc_midpoints = self.knnMidpointCalc(user_dicc, pois_dicc)
 
@@ -279,6 +288,7 @@ class KnnMidpoint(Recomendador):
             lat_midpoint = user_midpoint[0]
             lon_midpoint = user_midpoint[1]
 
+            #comparo con todos los midpoints de los users de train
             for i in dicc_midpoints: 
                 if i != user_test: 
 
@@ -295,7 +305,7 @@ class KnnMidpoint(Recomendador):
                     #print(dist)
                     
                     
-        
+        #ordenamos según los que tengan mayor relación 
         sorted_similarity = dict(sorted(dicc_scores.items(), key=lambda item: item[1], reverse=True))
         
         #GET K NEIGHBORS: 
@@ -306,6 +316,7 @@ class KnnMidpoint(Recomendador):
         dictionary_scores ={} #poi:totalscore
 
         for user_train in similarity_kneighbors: 
+            
             pois_user_train = user_dicc[user_train].keys()
 
             weight=similarity_kneighbors[user_train]
@@ -321,17 +332,64 @@ class KnnMidpoint(Recomendador):
 
         
 
-        #AHORA DE TODOS LOS DISPONIBLES COJO LOS 20 PRIMEROS. 
+        #AHORA DE TODOS LOS DISPONIBLES CON SUS SCORES COJO LOS 20 PRIMEROS. 
         dictionary_scores_sorted = dict(sorted(dictionary_scores.items(), key=lambda item: item[1], reverse=True))
 
         pois_recommended= dict(list(dictionary_scores_sorted.items())[:numRec])
 
-        #normalizar el score ? 
+
 
 
         with open(path + "//KNN_MidpointRecommendations_k" + str(k) + city + ".txt", "a") as file:
                 index=1
                 for (poi, score) in pois_recommended.items():
+                    file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
+                    index+=1
+
+
+    def reRanking(self, trainset, user_test, recomendaciones, path): 
+        user_dicc, pois_dicc , city= self.readKnnMidpoint(trainset)
+
+        #user dicc: usuarios & pois 
+        #pois dicc : pois: lon, lat 
+        dicc_filtrado={}
+        #quiero solo el midpoint del de test 
+        dicc_filtrado[user_test]= user_dicc[user_test]
+
+        dicc_midpoints = self.knnMidpointCalc(dicc_filtrado, pois_dicc)
+
+        dicc_scores = {}
+
+        #entiendo que si no está en train no le ponemos midpoint, NO SE CONSIDERA? 
+
+        if user_test in dicc_midpoints.keys(): 
+            #le puedo hacer recomendaciones 
+            user_midpoint = dicc_midpoints[user_test]
+            lat_midpoint = user_midpoint[0]
+            lon_midpoint = user_midpoint[1]
+
+            #comparo con todos los midpoints de los users de train
+            for i in recomendaciones: 
+                recom_lat = pois_dicc[i][0]
+                recom_lon = pois_dicc[i][1]
+
+                dist = haversine(lat_midpoint, lon_midpoint, recom_lat, recom_lon)
+
+                if dist==0: 
+                    dist = 0.001 
+                    dicc_scores[i] = 1/dist
+                else: 
+                    dicc_scores[i] = 1/dist
+            
+
+                        #print(dist)
+
+        #ordenamos según los que tengan mayor relación 
+            sorted_similarity = dict(sorted(dicc_scores.items(), key=lambda item: item[1], reverse=True))
+            
+            with open(path + "//MidpointRerankedRecommendations" + city + ".txt", "a") as file:
+                index=1
+                for (poi, score) in sorted_similarity.items():
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
                     index+=1
 
@@ -441,5 +499,10 @@ class Hybrid(Recomendador):
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
                     index+=1
 
-    
+        #(self, trainset, user_test, numRec, k, path)
+        # def readKnnMidpoint(self, trainset)
+        # def knnMidpointCalc(self, user_dicc, pois_dicc)
+
+
+
 
