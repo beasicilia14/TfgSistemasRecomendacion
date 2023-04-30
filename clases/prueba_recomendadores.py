@@ -21,13 +21,13 @@ with open("subsets/NewYork_US_validation.txt") as filevalidation:
         #2: timestamp 
 
         #random
-        #objeto_rand.recomendar(pois,user, 20, city, "clases//Recomendaciones")
+        #objeto_rand.recomendar(pois,user, 20, city, "clases//Recomendaciones", "subsets/NewYork_US_train.txt")
         #popularity
-        #objeto_pop.recomendar(pois,user, 20, city, scores,"clases//Recomendaciones")
+        objeto_pop.recomendar(pois,user, 20, city, scores,"clases//Recomendaciones", "subsets/NewYork_US_train.txt")
         #knn
         #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 20, 60, "clases//Recomendaciones")
         #knn midpoint 
-        objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 20, 30, "clases//Recomendaciones")
+        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 20, 30, "clases//Recomendaciones")
         #hybrid 
         #objeto_hybrid.recomendar("subsets/NewYork_US_train.txt", user, 20, 30, "clases//Recomendaciones")
 

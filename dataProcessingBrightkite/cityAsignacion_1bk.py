@@ -18,15 +18,14 @@ def haversine(lat1, lon1, lat2, lon2):
 
 #GETTING INFO ABOUT CITIES USING FOURSQUARE DATASET.. 
 dicc_ciudades ={}
-ciudades = ("New York", "Tokyo" )
+ciudades = ("NewYork_US", "Tokyo_JP" )
 with open("datasets\\foursquare\\dataset_TIST2015_Cities.txt") as file: 
     for line in file: 
         split_line = line.split("\t")
         # 0: nombre ciudad / 1: latitud / 2: Longitud /3: Codigo Pais /4: Nombre /5: tipo 
-        city = split_line[0]
-        
-        if city in ciudades: 
+        city = split_line[0].replace(" ","") + "_" + split_line[3]
 
+        if city in ciudades: 
             dicc_ciudades[city] = [float(split_line[1]), float(split_line[2])]
 
 dicc_asignados ={}
@@ -78,7 +77,7 @@ for city in ciudades:
                 dt = datetime.datetime.strptime(line_split[1], "%Y-%m-%dT%H:%M:%SZ")
             # Convert the datetime object to a Unix timestamp
                 timestamp = int(dt.timestamp())
-                file_write.write(line_split[0] + "y" + "\t" + poi_id + "\t" + str(timestamp) + "\t" + line_split[2] + "\t" + line_split[3] + "\n") 
+                file_write.write(line_split[0] + "bk" + "\t" + poi_id + "\t" + str(timestamp) + "\t" + line_split[2] + "\t" + line_split[3] + "\n") 
 
 #user id, poi id, timestamp, lat, lon , score 
 

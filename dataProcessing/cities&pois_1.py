@@ -1,4 +1,8 @@
 import math
+
+
+#funcion haversine --> AÑADIR A ARCHIVO SEPARADO CON SOLO FUNCIONES.
+
 def haversine(lat1, lon1, lat2, lon2):
     rad=math.pi/180
     dlat=lat2-lat1
