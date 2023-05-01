@@ -4,7 +4,7 @@
 cities = ["NewYork_US", "Tokyo_JP"]
 
 for i in cities: 
-    file_name = "dataProcessing\\intermediateFiles\\" + i + "finalVersion.txt"
+    file_name = "dataProcessingFoursquare\\intermediateFiles\\" + i + "finalVersion.txt"
 
     dicc_users = {}
     dicc_ntimes = {}
@@ -46,7 +46,7 @@ for i in cities:
             else:
                 dicc_ntimes[key] = 1
                      
-    file_name2 = "dataProcessing\\intermediateFiles\\" + i + "Filtered&Grouped.txt"
+    file_name2 = "dataProcessingFoursquare\\intermediateFiles\\" + i + "Filtered&Grouped.txt"
 
     
     file = open(file_name2, 'a')

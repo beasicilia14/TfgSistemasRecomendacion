@@ -4,7 +4,7 @@ cities = ["NewYork_US", "Tokyo_JP"]
 dataTotal = []
 
 for i in cities: 
-    file_name = "dataProcessing\\intermediateFiles\\" + i + ".txt"
+    file_name = "dataProcessingFoursquare\\intermediateFiles\\" + i + "Filtered&Grouped.txt"
     dicc_users = {}
     dicc_venueid = {}
     dicc_reps = {}
@@ -39,17 +39,8 @@ for i in cities:
     unique_POIs = len(dicc_venueid)
     mean_checkinsuser = round(sum(dicc_users.values()) / unique_users , 2)
 
-
-    #SIN CONTAR LOS REPETIDOS: 
-    #1. Numero de checkins total sin repetidos (userid y venueid iguales)
-    checkins_sin_rep = len(dicc_reps)
-
-    
-    #2. Media de checkins sin repeticiones /usuario : 
-    mean_checkinuser_sinrep = round(checkins_sin_rep/unique_users, 2)
-
     #AGRUPAMOS EN DATOS
-    data = {"Ciudad": [i, i], "Nºusuarios": [unique_users, unique_users], "Nºcheckis": [numero_checkins, checkins_sin_rep], "NºPOIs": [unique_POIs, unique_POIs], "Avg checkins/usuario": [mean_checkinsuser, mean_checkinuser_sinrep], "Repeticiones?":["si", "no"]}
+    data = {"Ciudad":  [i], "Nºusuarios":  [unique_users], "Nºcheckis": [numero_checkins], "NºPOIs": [unique_POIs], "Avg checkins/usuario": [mean_checkinsuser]}
 
     dataTotal.append(data)
 

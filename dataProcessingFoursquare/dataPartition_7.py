@@ -3,7 +3,7 @@ import pandas as pd
 cities = ["NewYork_US", "Tokyo_JP"]
 
 for i in cities:
-    file_name  = "dataProcessing\\intermediateFiles\\" + i + "Filtered&Grouped.txt" 
+    file_name  = "dataProcessingFoursquare\\intermediateFiles\\" + i + "Filtered&Grouped.txt" 
 
     datos = pd.read_csv(file_name, sep='\t', header=None)
    

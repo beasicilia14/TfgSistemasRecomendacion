@@ -28,7 +28,7 @@ with open("datasets\\foursquare\\dataset_TIST2015_Cities.txt") as fileciudades:
             paisciudades[pais] = [(split_line_city[0], split_line_city[1], split_line_city[2])]
 
 
-filePOIs_Ciudad = open('dataProcessing\\intermediateFiles\\ficheroPOIsCiudadvf.txt', 'w')  # fichero a escribir
+filePOIs_Ciudad = open('dataProcessingFoursquare\\intermediateFiles\\ficheroPOIsCiudadvf.txt', 'w')  # fichero a escribir
 contador = 0
 
 with open("datasets\\foursquare\\dataset_TIST2015_POIs.txt") as ficheropois:
@@ -70,7 +70,7 @@ filePOIs_Ciudad.close()
 
 #diccionario intermedio, almacena keyantiguo: keynuevo, lat, lon 
 dicc ={}
-with open("dataProcessing\\intermediateFiles\\ficheroPOIsCiudadvf.txt") as fichero:
+with open("dataProcessingFoursquare\\intermediateFiles\\ficheroPOIsCiudadvf.txt") as fichero:
     for line in fichero:
         split_line = line.split("\t")
         foursquarekey=split_line[1]
@@ -107,7 +107,7 @@ with open("datasets\\foursquare\\dataset_TIST2015_Checkins.txt") as ficherocheck
 
                 userid = split_line_checkin[0] 
 
-                fichero = "dataProcessing\\intermediateFiles\\" + ciudad + ".txt"
+                fichero = "dataProcessingFoursquare\\intermediateFiles\\" + ciudad + ".txt"
 
                 if os.path.exists(fichero):
                     with open(fichero, "a") as fcities:

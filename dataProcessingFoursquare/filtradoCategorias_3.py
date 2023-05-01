@@ -3,11 +3,11 @@
 import pandas as pd
 
 #FILTERING CATEGORIAS
-df_tokyo = pd.read_csv("dataProcessing//intermediateFiles//Tokyo_JP.txt", names = ["UserID", "VenueID", "Category", "TimeStamp", "Lat", "Lon"], sep="\t")
+df_tokyo = pd.read_csv("dataProcessingFoursquare//intermediateFiles//Tokyo_JP.txt", names = ["UserID", "VenueID", "Category", "TimeStamp", "Lat", "Lon"], sep="\t")
 categories_tokyo = sorted(df_tokyo.Category.unique())
 print(categories_tokyo)
 
-df_nyc = pd.read_csv("dataProcessing//intermediateFiles//NewYork_US.txt", names = ["UserID", "VenueID", "Category", "TimeStamp", "Lat", "Lon"], sep="\t")
+df_nyc = pd.read_csv("dataProcessingFoursquare//intermediateFiles//NewYork_US.txt", names = ["UserID", "VenueID", "Category", "TimeStamp", "Lat", "Lon"], sep="\t")
 categories_nyc = sorted(df_nyc.Category.unique())
 print(categories_nyc)
 
@@ -17,8 +17,8 @@ aceptadas_nyc = ['Accessories Store', 'Afghan Restaurant', 'African Restaurant',
 #LINE OF TOKYO: 295	96292	Cosmetics Shop	1333491438.0
 
 
-Tokyo_JP_Filtered = open('dataProcessing//intermediateFiles//Tokyo_JPFiltered.txt', 'w')  # fichero a escribir
-with open("dataProcessing//intermediateFiles//Tokyo_JP.txt") as ficheropois:
+Tokyo_JP_Filtered = open('dataProcessingFoursquare//intermediateFiles//Tokyo_JPFiltered.txt', 'w')  # fichero a escribir
+with open("dataProcessingFoursquare//intermediateFiles//Tokyo_JP.txt") as ficheropois:
     for line_poi in ficheropois:
         
         split_line = line_poi.split("\t")
@@ -32,8 +32,8 @@ with open("dataProcessing//intermediateFiles//Tokyo_JP.txt") as ficheropois:
 Tokyo_JP_Filtered.close()
 
 
-Nyc_US_Filtered = open('dataProcessing//intermediateFiles//NewYork_USFiltered.txt', 'w')  # fichero a escribir
-with open("dataProcessing//intermediateFiles//NewYork_US.txt") as ficheropois:
+Nyc_US_Filtered = open('dataProcessingFoursquare//intermediateFiles//NewYork_USFiltered.txt', 'w')  # fichero a escribir
+with open("dataProcessingFoursquare//intermediateFiles//NewYork_US.txt") as ficheropois:
     for line_poi in ficheropois:
         
         split_line = line_poi.split("\t")

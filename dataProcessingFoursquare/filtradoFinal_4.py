@@ -11,7 +11,7 @@ for i in cities:
     dicc_pois ={}
     dicc_users_aceptados = {}
 
-    file_name = "dataProcessing\\intermediateFiles\\" + i + "Filtered.txt"
+    file_name = "dataProcessingFoursquare\\intermediateFiles\\" + i + "Filtered.txt"
 
     with open(file_name) as file: 
         for line_city in file:
@@ -34,7 +34,7 @@ for i in cities:
                 dicc_pois[poi_id] = 1
     file.close()
 
-    file_name_2 = "dataProcessing\\intermediateFiles\\" + i + "finalVersion.txt"
+    file_name_2 = "dataProcessingFoursquare\\intermediateFiles\\" + i + "finalVersion.txt"
     file_new = open(file_name_2, 'a')
 
     with open(file_name) as file:        
