@@ -13,7 +13,7 @@ class Recomendador:
         with open(trainset) as file2:
             for line in file2:
                 split_line =line.split("\t")
-                user_id=int(split_line[0])
+                user_id=split_line[0]
                 venue_id =int(split_line[1])
 
                 if user_id not in pois.keys(): 
