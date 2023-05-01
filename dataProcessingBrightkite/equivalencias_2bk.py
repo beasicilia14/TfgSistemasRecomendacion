@@ -17,7 +17,7 @@ for city in cities:
     dicc_foursquare = {}
 
     city_bk = city.split("_")[0]
-    file_name_brightkite = "dataProcessingBrightkite\\" + city_bk + "_checkins.txt"
+    file_name_brightkite = "dataProcessingBrightkite\\intermediateFiles\\" + city_bk + "_checkins.txt"
 
 
     with open(file_name_brightkite) as fileBrightkite: 
@@ -58,7 +58,7 @@ for city in cities:
                 dicc_foursquare[id]  = [lat, lon]
 
 
-    file_name_final = "dataProcessingBrightkite\\equivalencias_" + city_bk + ".txt"
+    file_name_final = "dataProcessingBrightkite\\intermediateFiles\\equivalencias_" + city_bk + ".txt"
     file = open(file_name_final, "a")
 
     equivalencias = {}

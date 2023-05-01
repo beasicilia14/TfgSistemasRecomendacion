@@ -3,7 +3,7 @@
 cities = ["NewYork_US", "Tokyo_JP"]
 
 for i in cities: 
-    file_name = "dataProcessingBrightkite\\" + i + "_train.txt"
+    file_name = "dataProcessingBrightkite\\intermediateFiles\\" + i + "_train.txt"
 
     dicc_users = {}
     dicc_ntimes = {}

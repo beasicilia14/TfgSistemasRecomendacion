@@ -65,7 +65,7 @@ import datetime
 
 for city in ciudades: 
     pois_city = dicc_asignados[city]
-    file_write = open("dataProcessingBrightkite\\" + city.replace(" ", "") + "_checkins.txt", "w")
+    file_write = open("dataProcessingBrightkite\\intermediateFiles\\" + city.replace(" ", "") + "_checkins.txt", "w")
     
     with open("datasets\\brightkite\\Brightkite_totalCheckins.txt") as file_brightkite:
         

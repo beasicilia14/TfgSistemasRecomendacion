@@ -3,8 +3,8 @@ import datetime
 cities = ("NewYork_US", "Tokyo_JP")
 for city in cities: 
 
-    file_write_name = "dataProcessingGowalla\\" + city + "_train.txt"
-    file_name = "dataProcessingGowalla\\" + city + "_checkins.txt"
+    file_write_name = "dataProcessingGowalla\\intermediateFiles\\" + city + "_train.txt"
+    file_name = "dataProcessingGowalla\\intermediateFiles\\" + city + "_checkins.txt"
     
     file_write = open(file_write_name, "w")
 

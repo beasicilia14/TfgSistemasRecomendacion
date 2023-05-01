@@ -3,7 +3,7 @@ cities = ("NewYork_US", "Tokyo_JP")
 for city in cities: 
     dicc_bk= {}
 
-    file_name = "dataProcessingBrightkite\\equivalencias_" + city + ".txt"
+    file_name = "dataProcessingBrightkite\\intermediateFiles\\equivalencias_" + city + ".txt"
 
     with open(file_name) as file: 
         for line in file: 
@@ -16,11 +16,11 @@ for city in cities:
             dicc_bk[id_bk] = id_foursquare
 
     
-    file_name_w = "dataProcessingBrightkite\\" + city + "_train.txt" 
+    file_name_w = "dataProcessingBrightkite\\intermediateFiles\\" + city + "_train.txt" 
     writefile = open(file_name_w,  "w")
     count = 0 
 
-    file_name_2 = "dataProcessingBrightkite\\" + city + "_checkins.txt"
+    file_name_2 = "dataProcessingBrightkite\\intermediateFiles\\" + city + "_checkins.txt"
 
     with open(file_name_2) as file2: 
         for line in file2: 

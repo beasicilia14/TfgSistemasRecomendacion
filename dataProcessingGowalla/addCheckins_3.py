@@ -3,7 +3,7 @@ cities = ("NewYork_US", "Tokyo_JP")
 for city in cities: 
     dicc_gowalla = {}
 
-    file_name = "dataProcessingGowalla\\equivalencias_" + city + ".txt"
+    file_name = "dataProcessingGowalla\\intermediateFiles\\equivalencias_" + city + ".txt"
 
     with open(file_name) as file: 
         for line in file: 
@@ -16,11 +16,11 @@ for city in cities:
             dicc_gowalla[id_gowalla] = id_foursquare
 
     
-    file_name_w = "dataProcessingGowalla\\" + city + "checkins.txt" 
+    file_name_w = "dataProcessingGowalla\\intermediateFiles\\" + city + "checkins.txt" 
     writefile = open(file_name_w,  "w")
     count = 0 
 
-    file_name_2 = "dataProcessingGowalla\\fichero" + city + ".txt"
+    file_name_2 = "dataProcessingGowalla\\intermediateFiles\\fichero" + city + ".txt"
 
     with open(file_name_2) as file2: 
         for line in file2: 

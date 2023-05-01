@@ -16,7 +16,7 @@ for city in cities:
     dicc_gowalla = {}
     dicc_foursquare = {}
 
-    file_nameg = "dataProcessingGowalla\\fichero" + city + ".txt"
+    file_nameg = "dataProcessingGowalla\\intermediateFiles\\fichero" + city + ".txt"
 
 
 
@@ -50,7 +50,7 @@ for city in cities:
                 dicc_foursquare[id]  = [lat, lon]
 
 
-    file_name_final = "dataProcessingGowalla\\equivalencias_" + city + ".txt"
+    file_name_final = "dataProcessingGowalla\\intermediateFiles\\equivalencias_" + city + ".txt"
     file = open(file_name_final, "a")
 
     equivalencias = {}

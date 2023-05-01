@@ -56,7 +56,7 @@ class Random(Recomendador):
         
         midpoint_object = KnnMidpoint()
        
-        midpoint_object.reRanking(trainset, usuario, random_items, path_destino "//Random")
+        midpoint_object.reRanking(trainset, usuario, random_items, path_destino + "//Random")
 
 
 class Popularity(Recomendador): 
@@ -198,9 +198,9 @@ class Knn(Recomendador):
 
         midpoint_object = KnnMidpoint()
        
-        midpoint_object.reRanking(trainset, user_test, pois_recommended, path_destino)
+        midpoint_object.reRanking(trainset, user_test, pois_recommended, path_destino +"//KNN_k" + str(k))
 
-        with open(path_destino + "//KNNRecommendations_k" + str(k) + city + ".txt", "a") as file:
+        with open(path_destino + "//KNN_k" + str(k) + "Recommendations" + city + ".txt", "a") as file:
                 index=1
                 for (poi, score) in pois_recommended.items():
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
