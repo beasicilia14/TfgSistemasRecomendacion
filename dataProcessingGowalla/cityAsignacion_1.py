@@ -18,10 +18,14 @@ with open("datasets\\foursquare\\dataset_TIST2015_Cities.txt") as file:
     for line in file: 
         split_line = line.split("\t")
         # 0: nombre ciudad / 1: latitud / 2: Longitud /3: Codigo Pais /4: Nombre /5: tipo 
-        city = split_line[0]
+        name = split_line[0]
+        codigo_pais = split_line[3]
+        city = name.replace(" ","") + "_"+ codigo_pais
+
         if city in ciudades: 
             dicc_ciudades[city] = [split_line[1], split_line[2]]
 
+print(dicc_ciudades)
 
 filePOIs_Nyc = open("dataProcessingGowalla\\intermediateFiles\\ficheroNewYork_US.txt", "a")
 filePOIs_Tky = open("dataProcessingGowalla\\intermediateFiles\\ficheroTokyo_JP.txt", "a")

@@ -62,9 +62,18 @@ for city in cities:
         valor= 5
         
         for j in dicc_foursquare: 
-            lat_j = float(dicc_foursquare[j][0])
-            lon_j = float(dicc_foursquare[j][1])
+            lat_j = dicc_foursquare[j][0]
+            if lat_j =='': 
+                lat_j=0.0
+            else:
+                lat_j=float(dicc_foursquare[j][0])
+
+            lon_j = dicc_foursquare[j][1]
             
+            if lon_j =='': 
+                lon_j=0.0
+            else: 
+                lon_j=float(lon_j)
             distancia = haversine(lat_i, lon_i, lat_j, lon_j) 
             
             if distancia<valor: 

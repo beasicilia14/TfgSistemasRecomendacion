@@ -379,7 +379,7 @@ class KnnMidpoint(Recomendador):
 
             dicc_scores = {}
 
-            #entiendo que si no está en train no le ponemos midpoint, NO SE CONSIDERA? 
+            #entiendo que si no está en train no le ponemos midpoint, NO SE CONSIDERA 
 
             if user_test in dicc_midpoints.keys(): 
                 #le puedo hacer recomendaciones 
@@ -403,6 +403,7 @@ class KnnMidpoint(Recomendador):
                 
 
                             #print(dist)
+
 
             #ordenamos según los que tengan mayor relación 
                 sorted_similarity = dict(sorted(dicc_scores.items(), key=lambda item: item[1], reverse=True))
@@ -428,13 +429,13 @@ class Hybrid(Recomendador):
         #
         
         path_temp = "clases//intermediate"
-        objeto_pop.recomendar(pois,user_test, 20, city, scores,path_temp)
+        objeto_pop.recomendar(pois,user_test, 20, city, scores,path_temp, trainset)
         objeto_knn.recomendar(trainset, user_test, numRec, k,  path_temp)
         objeto_knnmidpoint.recomendar(trainset, user_test, numRec, k,  path_temp)
 
         file_rec_pop = path_temp + "//PopularityRecommendations" + city + ".txt"
 
-        file_rec_knn = path_temp + "//KNNRecommendations_k" + str(k) + city + ".txt"
+        file_rec_knn = path_temp + "//KNN_k" + str(k) + "Recommendations" + city + ".txt"
 
         file_rec_midpoint = path_temp + "//KNN_MidpointRecommendations_k" + str(k) + city + ".txt"
 

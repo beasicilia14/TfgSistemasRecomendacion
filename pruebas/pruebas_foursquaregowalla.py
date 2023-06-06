@@ -21,19 +21,19 @@ with open("subsets/NewYork_US_validation.txt") as filevalidation:
         #2: timestamp 
 
         #random
-        objeto_rand.recomendar(pois,user, 20, city, "pruebas//RecomendacionesFoursquareGowalla", "merge/NewYork_USFoursquareGowalla_train.txt")
+        objeto_rand.recomendar(pois,user, 10, city, "pruebas//RecomendacionesFoursquareGowalla", "merge/NewYork_USFoursquareGowalla_train.txt")
         
         #popularity
-        objeto_pop.recomendar(pois,user, 20, city, scores,"pruebas//RecomendacionesFoursquareGowalla", "merge/NewYork_USFoursquareGowalla_train.txt")
+        objeto_pop.recomendar(pois,user, 10, city, scores,"pruebas//RecomendacionesFoursquareGowalla", "merge/NewYork_USFoursquareGowalla_train.txt")
         
         #knn
-        objeto_knn.recomendar("merge/NewYork_USFoursquareGowalla_train.txt", user, 20, 30, "pruebas//RecomendacionesFoursquareGowalla")
+        #objeto_knn.recomendar("merge/NewYork_USFoursquareGowalla_train.txt", user, 12, 30, "pruebas//RecomendacionesFoursquareGowalla")
        
         #knn midpoint 
-        objeto_knnmidpoint.recomendar("merge/NewYork_USFoursquareGowalla_train.txt", user, 20, 30, "pruebas//RecomendacionesFoursquareGowalla")
+        #objeto_knnmidpoint.recomendar("merge/NewYork_USFoursquareGowalla_train.txt", user, 20, 30, "pruebas//RecomendacionesFoursquareGowalla")
         
         #hybrid 
-        objeto_hybrid.recomendar("merge/NewYork_USFoursquareGowalla_train.txt", user, 20, 30, "pruebas//RecomendacionesFoursquareGowalla")
+        #objeto_hybrid.recomendar("merge/NewYork_USFoursquareGowalla_train.txt", user, 20, 30, "pruebas//RecomendacionesFoursquareGowalla")
 
 
 
