@@ -9,10 +9,10 @@ objeto_knnmidpoint = KnnMidpoint()
 objeto_hybrid = Hybrid()
 
 
-pois, scores, city = objeto_rec.readTrain("subsets/NewYork_US_train.txt")
+pois, scores, city = objeto_rec.readTrain("subsets/Tokyo_JP_train_completo.txt")
 
 
-with open("subsets/NewYork_US_test.txt") as filetest: 
+with open("subsets/Tokyo_JP_test.txt") as filetest: 
     for line in filetest: 
         split_line = line.split("\t")
         user = split_line[0]
@@ -21,33 +21,33 @@ with open("subsets/NewYork_US_test.txt") as filetest:
         #2: timestamp 
 
         #random
-        #objeto_rand.recomendar(pois,user, 10, city, "pruebas//RecomendacionesFoursquareTest", "subsets/NewYork_US_train.txt")
+        #objeto_rand.recomendar(pois,user, 10, city, "pruebas//RecomendacionesFoursquareTestTokyo", "subsets/Tokyo_JP_train_completo.txt")
         
         #popularity
-        #objeto_pop.recomendar(pois,user, 10, city, scores,"pruebas//RecomendacionesFoursquareTest", "subsets/NewYork_US_train.txt")
+        #objeto_pop.recomendar(pois,user, 10, city, scores,"pruebas//RecomendacionesFoursquareTestTokyo", "subsets/Tokyo_JP_train_completo.txt")
         
         #knn
-        #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 10, 20, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 10, 30, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 10, 40, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 10, 50, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 10, 60, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 10, 100, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knn.recomendar("subsets/NewYork_US_train.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 20, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 30, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 40, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 50, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 60, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 100, "pruebas//RecomendacionesFoursquareTest")
+        objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTestTokyo")
 
 
        
         #knn midpoint 
-        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 10, 20, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 10, 30, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 10, 40, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 10, 50, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 10, 60, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 10, 100, "pruebas//RecomendacionesFoursquareTest")
-        objeto_knnmidpoint.recomendar("subsets/NewYork_US_train.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 20, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 30, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 40, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 50, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 60, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 100, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTestTokyo")
 
         #hybrid 
-        #objeto_hybrid.recomendar("subsets/NewYork_US_train.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTest")
+        #objeto_hybrid.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTest")
 
 
 

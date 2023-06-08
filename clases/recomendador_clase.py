@@ -253,8 +253,18 @@ class KnnMidpoint(Recomendador):
             y=0
             z=0
             for poi in pois_visited: 
-                lat= float(pois_dicc[poi][0])
-                lon = float(pois_dicc[poi][1])
+                lat= pois_dicc[poi][0]
+                lon = pois_dicc[poi][1]
+                if lat=='': 
+                    lat =0.0
+                else: 
+                    lat = float(lat)
+                
+                if lon=='': 
+                    lon=0.0
+                else: 
+                    lon = float(lon)
+               
                 
                 lon = lon * math.pi / 180 
                 lat = lat * math.pi / 180 
@@ -390,8 +400,19 @@ class KnnMidpoint(Recomendador):
                 #comparo con todos los midpoints de los users de train
                 for i in recomendaciones: 
                     #print(i)
-                    recom_lat = float(pois_dicc[str(i)][0])
-                    recom_lon = float(pois_dicc[str(i)][1])
+                    recom_lat = pois_dicc[str(i)][0]
+                    recom_lon = pois_dicc[str(i)][1]
+                    
+                    if recom_lat =='': 
+                        recom_lat=0.0
+                    else: 
+                        recom_lat = float(recom_lat)
+                    
+                    if recom_lon =='': 
+                        recom_lon =0.0
+                    else: 
+                        recom_lon = float(recom_lon)
+                    
 
                     dist = haversine(lat_midpoint, lon_midpoint, recom_lat, recom_lon)
 

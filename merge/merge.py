@@ -6,7 +6,7 @@ cities = ("NewYork_US", "Tokyo_JP")
 
 for city in cities: 
   # Define the filenames
-    file_foursquare = "subsets\\" + city +"_train.txt"
+    file_foursquare = "subsets\\" + city +"_train_completo.txt"
     file_gowalla = "dataProcessingGowalla\\" + city + "Filtered&Grouped.txt"
 
     output_file = "merge\\" + city + "FoursquareGowalla_train.txt"
