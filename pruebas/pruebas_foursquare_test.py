@@ -24,7 +24,7 @@ with open("subsets/Tokyo_JP_test.txt") as filetest:
         #objeto_rand.recomendar(pois,user, 10, city, "pruebas//RecomendacionesFoursquareTestTokyo", "subsets/Tokyo_JP_train_completo.txt")
         
         #popularity
-        #objeto_pop.recomendar(pois,user, 10, city, scores,"pruebas//RecomendacionesFoursquareTestTokyo", "subsets/Tokyo_JP_train_completo.txt")
+        objeto_pop.recomendar(pois,user, 10, city, scores,"pruebas//RecomendacionesFoursquareTestTokyo", "subsets/Tokyo_JP_train_completo.txt")
         
         #knn
         #objeto_knn.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 20, "pruebas//RecomendacionesFoursquareTest")
@@ -44,7 +44,7 @@ with open("subsets/Tokyo_JP_test.txt") as filetest:
         #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 50, "pruebas//RecomendacionesFoursquareTest")
         #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 60, "pruebas//RecomendacionesFoursquareTest")
         #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 100, "pruebas//RecomendacionesFoursquareTest")
-        #objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTestTokyo")
+        objeto_knnmidpoint.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTestTokyo")
 
         #hybrid 
         #objeto_hybrid.recomendar("subsets/Tokyo_JP_train_completo.txt", user, 10, 120, "pruebas//RecomendacionesFoursquareTest")

@@ -22,19 +22,19 @@ def evaluate_algorithm(rec_path, validation_data_path, train_data_path, k):
     return prec, rec, epc, agg , cov
 
 rec_paths = [
-    "pruebas//RecomendacionesFoursquareTestNewYork//RandomRecomNewYork.txt",
-    "pruebas//RecomendacionesFoursquareTestNewYork//RandomMidpointRerankedRecommendationsNewYork.txt",
-    "pruebas//RecomendacionesFoursquareTestNewYork//PopularityRecommendationsNewYork.txt",
-    "pruebas//RecomendacionesFoursquareTestNewYork//PopularityMidpointRerankedRecommendationsNewYork.txt",
-    "pruebas//RecomendacionesFoursquareTestNewYork//KNN_k120RecommendationsNewYork.txt",
-    "pruebas//RecomendacionesFoursquareTestNewYork//KNN_k120MidpointRerankedRecommendationsNewYork.txt",
-    "pruebas//RecomendacionesFoursquareTestNewYork//KNN_MidpointRecommendations_k120NewYork.txt"
+    "pruebas//RecomendacionesFoursquareTestTokyo//RandomRecomTokyo.txt",
+    "pruebas//RecomendacionesFoursquareTestTokyo//RandomMidpointRerankedRecommendationsTokyo.txt",
+    "pruebas//RecomendacionesFoursquareTestTokyo//PopularityRecommendationsTokyo.txt",
+    "pruebas//RecomendacionesFoursquareTestTokyo//PopularityMidpointRerankedRecommendationsTokyo.txt",
+    "pruebas//RecomendacionesFoursquareTestTokyo//KNN_k120RecommendationsTokyo.txt",
+    "pruebas//RecomendacionesFoursquareTestTokyo//KNN_k120MidpointRerankedRecommendationsTokyo.txt",
+    "pruebas//RecomendacionesFoursquareTestTokyo//KNN_MidpointRecommendations_k120Tokyo.txt"
 
     ]
 
 
-validation_data_path = "subsets//NewYork_US_test.txt"
-train_data_path = "subsets/NewYork_US_train_completo.txt"
+validation_data_path = "subsets//Tokyo_JP_test.txt"
+train_data_path = "subsets/Tokyo_JP_train_completo.txt"
 cutoff = 10
 
 algorithm_names = ["Random", "Random Reranked","Popularity", "Popularity Reranked", "KNN K120", "KNN K120 Reranked", "KnnMidpoint 120"]
