@@ -11,7 +11,7 @@ def haversine(lat1, lon1, lat2, lon2):
 cities = ("Tokyo_JP", "NewYork_US")
 
 for city in cities: 
-    file_namef  = "dataProcessing\\intermediateFiles\\" + city + "finalVersion.txt" 
+    file_namef  = "dataProcessingFoursquare\\intermediateFiles\\" + city + "finalVersion.txt" 
     
     dicc_brightkite = {}
     dicc_foursquare = {}

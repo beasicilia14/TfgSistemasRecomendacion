@@ -558,7 +558,7 @@ class KnnItems(Recomendador):
         user_poi_scores = {}
         city = trainset[(trainset.index("/")+1):trainset.index("_")]
         poi_users_visited = {}
-
+        pois_candidatos = set()
         with open(trainset) as train:
                 for line in train:
                     split_line =line.split("\t")
@@ -569,7 +569,7 @@ class KnnItems(Recomendador):
                     user_id=split_line[0]
                     poi =split_line[1]
                     score = split_line[5].split("\n")[0]
-                    
+                    pois_candidatos.add(poi)
                     #Guardo scores que los usuarios han dado a los pois, numerador. 
                     if user_id in user_poi_scores.keys(): 
                         user_poi_scores[user_id][poi] = int(score)
@@ -584,7 +584,7 @@ class KnnItems(Recomendador):
                         poi_users_visited[poi]= {user_id: int(score)}
                     
         
-        return  user_poi_scores, city, poi_users_visited
+        return  user_poi_scores, city, poi_users_visited, pois_candidatos
 
 
     def calculate_cosine_similarity(self, user_set1, user_set2):
@@ -620,15 +620,15 @@ class KnnItems(Recomendador):
                     similarity = self.calculate_cosine_similarity(users1, users2)
                     similarities[poi2] = similarity
             
-            item_similarities[poi1] = similarities
+            diccionario_ordenado = dict(sorted(similarities.items(), key=lambda x: x[1]))
 
-        item_similarities_sorted  = dict(sorted(item_similarities.items(), key=lambda item: item[1], reverse=True))
+            item_similarities[poi1] = diccionario_ordenado
+
         
-        return item_similarities_sorted
+        return item_similarities
 
 
-
-    def recomendar(self, user_test, user_poi_scores, city, item_similarities, numRecom,k, path_destino): 
+    def recomendar(self, user_test, user_poi_scores, city, item_similarities, numRecom,k, path_destino, pois_candidatos): 
         
         dicc_ratings = {}
         #Rating numerador --> sumatorio rui*rvi
@@ -636,36 +636,40 @@ class KnnItems(Recomendador):
         #GET POIS VISITED BY USER_TEST:
         if user_test in user_poi_scores.keys(): 
             user_visited = user_poi_scores[user_test]
-        else:
-            user_visited =[]
 
-        #Recorro cada poi disponible para recomendar
-        for i in user_poi_scores.keys(): 
-            rating = 0 
-            if i not in user_visited: 
-                similarities = item_similarities[i]
+            for i in pois_candidatos: 
+                rating = 0 
+                if i not in user_visited:  
+                    similarities = item_similarities[i]
+                        
+                        
 
-                top_k_similar_pois = dict(list(similarities.items())[:k])
-                
-                for poi, similarity in top_k_similar_pois:
-                    if poi in user_poi_scores[user_test]:  
-                        weight = similarity
-                        score = user_poi_scores[user_test][poi]
-                        rating += weight * score 
+                    top_k_similar_pois = dict(list(similarities.items())[:k])
+                    
+                    for poi, similarity in top_k_similar_pois:
+                        if poi in user_poi_scores[user_test]:  
+                            weight = similarity
+                            score = user_poi_scores[user_test][poi]
+                            rating += weight * score 
 
-                dicc_ratings[i] = rating 
+                    dicc_ratings[i] = rating 
+            else:
+                user_visited =[]
+
+            #Recorro cada poi disponible para recomendar
+            
 
         
         
-        top_recommended_pois = dict(sorted(dicc_ratings.items(), key=lambda x: x[1], reverse=True)[:numRecom])
+            top_recommended_pois = dict(sorted(dicc_ratings.items(), key=lambda x: x[1], reverse=True)[:numRecom])
 
 
-        #print(top_recommended_pois)
-        with open(path_destino + "//KNNitems_k" + str(k) + "Recommendations" + city + ".txt", "a") as file:
-                index=1
-                for (poi, score) in top_recommended_pois.items():
-                    file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
-                    index+=1
+            #print(top_recommended_pois)
+            with open(path_destino + "//KNNitems_k" + str(k) + "Recommendations" + city + ".txt", "a") as file:
+                    index=1
+                    for (poi, score) in top_recommended_pois.items():
+                        file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
+                        index+=1
 
 
 
