@@ -135,7 +135,8 @@ class Epc(Metrica_User):
                 visited_pois = dicc_recommendations[user]
                 
                 for i in visited_pois:
-                    lista.append(scores[i]/len(dicc_recommendations))
+                    if i in scores.keys():
+                     lista.append(scores[i]/len(dicc_recommendations))
 
                 epc = 1- sum(lista)/len(lista)
 

@@ -23,15 +23,20 @@ def evaluate_algorithm(rec_path, validation_data_path, train_data_path, k):
     return prec, rec, epc, agg , cov
 
 rec_paths = [
-    "pruebas//RecomendacionesFoursquareTestTokyo//HybridRecommendationTokyo.txt"
+    "pruebas//CarpetaProbando//KNNitems_k20RecommendationsNewYork.txt",
+    "pruebas//CarpetaProbando//KNNitems_k30RecommendationsNewYork.txt",
+    "pruebas//CarpetaProbando//KNNitems_k60RecommendationsNewYork.txt",
+    "pruebas//CarpetaProbando//KNNitems_k80RecommendationsNewYork.txt",
+    "pruebas//CarpetaProbando//KNNitems_k100RecommendationsNewYork.txt",
+    "pruebas//CarpetaProbando//KNNitems_k120RecommendationsNewYork.txt"
     ]
 
 
-validation_data_path = "subsets//Tokyo_JP_test.txt"
-train_data_path = "subsets//Tokyo_JP_train_completo.txt"
+validation_data_path = "subsets//NewYork_US_validation.txt"
+train_data_path = "subsets//NewYork_US_train.txt"
 cutoff = 10
 
-algorithm_names = ["Hybrid"]
+algorithm_names = ["k20", "k30", "k60", "k80", "k100", "k120"]
 
 data = {"Algorithm": [], "Precision": [], "Recall": [], "epc": [], "AggDiversity": [], "Coverage": []}
 

@@ -23,15 +23,15 @@ def evaluate_algorithm(rec_path, validation_data_path, train_data_path, k):
     return prec, rec, epc, agg , cov
 
 rec_paths = [
-    "pruebas//RecomendacionesFoursquareTestTokyo//HybridRecommendationTokyo.txt"
+    "pruebas//CarpetaProbandoTokio//KNNitems_k20RecommendationsNewYork.txt"
     ]
 
 
-validation_data_path = "subsets//Tokyo_JP_test.txt"
-train_data_path = "subsets//Tokyo_JP_train_completo.txt"
+validation_data_path = "subsets//NewYork_US_test.txt"
+train_data_path = "subsets//NewYork_US_train_completo.txt"
 cutoff = 10
 
-algorithm_names = ["Hybrid"]
+algorithm_names = ["k20"]
 
 data = {"Algorithm": [], "Precision": [], "Recall": [], "epc": [], "AggDiversity": [], "Coverage": []}
 
@@ -48,9 +48,6 @@ for i, rec_path in enumerate(rec_paths):
 table = pd.DataFrame(data)
 
 print(table)
-
-
-
 
 
 
