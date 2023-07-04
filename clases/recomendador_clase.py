@@ -2,6 +2,7 @@ import random
 import math 
 from funciones import * 
 
+
 class Recomendador: 
 
     def readTrain(self,trainset):
@@ -45,7 +46,7 @@ class Random(Recomendador):
         random_items = random.sample(pois_list, numeroRecomendaciones)
         #random.shuffle(pois_list)
         # Return first n POIs
-        file_name = path_destino + "//RandomRecom" + city + ".txt"
+        file_name = path_destino + "//RandomRecommendations" + city + ".txt"
         file = open(file_name, 'a')
         ind=1
         
@@ -541,7 +542,7 @@ class Hybrid(Recomendador):
         pois_recommended= dict(list(dictionary_top20.items())[:numRec])
 
 
-        with open(path + "//HybridRecommendation" + city + ".txt", "a") as file:
+        with open(path + "//HybridRecommendations" + city + ".txt", "a") as file:
                 index=1
                 for (poi, score) in pois_recommended.items():
                     file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
@@ -553,114 +554,94 @@ class Hybrid(Recomendador):
 
 
 
-class KnnItems(Recomendador): 
-    def readknn(self,trainset):
+class KnnItems(Recomendador):
+    def readknn(self, trainset):
         user_poi_scores = {}
-        city = trainset[(trainset.index("/")+1):trainset.index("_")]
+        city = trainset[(trainset.index("/") + 1):trainset.index("_")]
         poi_users_visited = {}
-      
+
         with open(trainset) as train:
-                for line in train:
-                    split_line =line.split("\t")
-                    #0: user
-                    #1: poi
-                    #2: timestamp
-                    #5: score 
-                    user_id=split_line[0]
-                    poi =split_line[1]
-                    score = split_line[5].split("\n")[0]
-                    
-                    #Guardo scores que los usuarios han dado a los pois, numerador. 
-                    if user_id in user_poi_scores.keys(): 
-                        user_poi_scores[user_id][poi] = int(score)
-                    else: 
-                        user_poi_scores[user_id] = {poi:int(score)}
-                    
+            for line in train:
+                split_line = line.split("\t")
+                user_id = split_line[0]
+                poi = split_line[1]
+                score = split_line[5].split("\n")[0]
 
-                    #Diccionario usuarios que han visitado cada poi y el score dado : {poi1: {usuario1:5 , usuario2:3}
-                    if poi in poi_users_visited.keys(): 
-                        poi_users_visited[poi][user_id] = int(score)
-                    else: 
-                        poi_users_visited[poi]= {user_id: int(score)}
-                    
-        
-        return  user_poi_scores, city, poi_users_visited
+                if user_id in user_poi_scores:
+                    user_poi_scores[user_id][poi] = int(score)
+                else:
+                    user_poi_scores[user_id] = {poi: int(score)}
 
+                if poi in poi_users_visited:
+                    poi_users_visited[poi][user_id] = int(score)
+                else:
+                    poi_users_visited[poi] = {user_id: int(score)}
+
+        return user_poi_scores, city, poi_users_visited
 
     def calculate_cosine_similarity(self, user_set1, user_set2):
-        # Create a set containing all unique users
-        
-        all_users = set(list(user_set1.keys() ) + list(user_set2.keys()))
-        
-        # Numerador
+        all_users = set(user_set1.keys()).union(user_set2.keys())
         dot_product = sum(user_set1.get(user, 0) * user_set2.get(user, 0) for user in all_users)
-        
-        # Calculate the magnitudes of the user sets
-        magnitude1 = math.sqrt(sum(score**2 for score in user_set1.values()))
-        magnitude2 = math.sqrt(sum(score**2 for score in user_set2.values()))
-        
-        # Denominadores igual a 0 evitar div por 0
+        magnitude1 = math.sqrt(sum(score ** 2 for score in user_set1.values()))
+        magnitude2 = math.sqrt(sum(score ** 2 for score in user_set2.values()))
+
         if magnitude1 == 0 or magnitude2 == 0:
             return 0.0
-        
-        # Cosine similarity
+
         similarity = dot_product / (magnitude1 * magnitude2)
-        
         return similarity
 
     
     def calculate_item_similarities(self, poi_users_visited):
         item_similarities = {}
-        
-        for poi1, users1 in poi_users_visited.items():
+
+        poi_list = list(poi_users_visited.keys())
+        num_pois = len(poi_list)
+
+        for i in range(num_pois):
+            poi1 = poi_list[i]
+            users1 = poi_users_visited[poi1]
             similarities = {}
-            
-            for poi2, users2 in poi_users_visited.items():
-                if poi1 != poi2:
-                    similarity = self.calculate_cosine_similarity(users1, users2)
-                    similarities[poi2] = similarity
-            
-            diccionario_ordenado = dict(sorted(similarities.items(), key=lambda x: x[1]))
 
-            item_similarities[poi1] = diccionario_ordenado
+            for j in range(i+1, num_pois):
+                poi2 = poi_list[j]
+                users2 = poi_users_visited[poi2]
 
-        
+                similarity = self.calculate_cosine_similarity(users1, users2)
+                similarities[poi2] = similarity
+
+            item_similarities[poi1] = similarities
+
         return item_similarities
 
 
+
     def recomendar(self, user_test, user_poi_scores, city, item_similarities, numRecom, k, path_destino):
-        # Obtener los scores de los POIs visitados por el usuario de prueba
-        if user_test in user_poi_scores.keys():
+        if user_test in user_poi_scores:
             user_scores = user_poi_scores[user_test]
-        
-            # Construir un conjunto de ítems candidatos
             candidates = set()
+            
             for item, score in user_scores.items():
                 neighbors = sorted(item_similarities[item].items(), key=lambda x: x[1], reverse=True)[:k]
                 candidates.update(neighbor for neighbor, _ in neighbors)
             
-            # Calcular las puntuaciones ponderadas de los ítems candidatos
             scores = {}
+
             for candidate in candidates:
                 score_sum = 0
-                weight_sum = 0
                 for item, score in user_scores.items():
-                    if candidate in item_similarities[item]:
-                        similarity = item_similarities[item][candidate]
-                        score_sum += score * similarity
-                        
-            
-                    scores[candidate] = score_sum 
-            
-            # Obtener las mejores recomendaciones
+                    similarity = item_similarities[item].get(candidate, 0)
+                    score_sum += score * similarity
+
+                scores[candidate] = score_sum
+
             recommendations = sorted(scores.items(), key=lambda x: x[1], reverse=True)[:numRecom]
 
-            #print(top_recommended_pois)
             with open(path_destino + "//KNNitems_k" + str(k) + "Recommendations" + city + ".txt", "a") as file:
-                    index=1
-                    for (poi, score) in recommendations:
-                        file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
-                        index+=1
+                index = 1
+                for poi, score in recommendations:
+                    file.write(f"{user_test}\t{index}\t{poi}\t{score}\n")
+                    index += 1
 
         
      
