@@ -49,7 +49,7 @@ Llegados a este paso, se contarán con los conjuntos de datos procesados y listo
 ## Notas: 
 - En este caso, el análisis se ha centrado en los datos de Foursquare de las ciudades de Nueva York y Tokio. Si se quisiera ampliar este análisis a otras ciudades, únicamente habría que modificar las listas "ciudades_escogidas" y "paises" en las primeras líneas del archivo encontrado en la ruta "dataProcessingFoursquare/cities&pois_1.py". 
 
-- En caso de modificar la ciudad, se debería ejecutar los módulos de preprocesado de datos de Yelp para comprobar si existe alguna equivalencia dentro de este dataset con los datos de Foursquare para esta nueva ciudad. 
+- En caso de modificar la ciudad, se deberían ejecutar los módulos de preprocesado de datos de Yelp para comprobar si existe alguna equivalencia dentro de este dataset con los datos de Foursquare para esta nueva ciudad. 
 
 
 
