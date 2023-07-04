@@ -106,37 +106,38 @@ class Epc(Metrica_User):
     def __init__(self, recommendations_path, test_data_path, train_data_path, cutoff):
         super().__init__(recommendations_path, test_data_path, train_data_path, cutoff)
     
-    def calculate(self): 
+    def calculate(self):
         obj_rec = Recomendador()
         pois, scores, city = obj_rec.readTrain(self.train_data_path)
         
-        epc_dicc={}
+        epc_dicc = {}
         dicc_recommendations = {}
-
-        with open(self.recommendations_path) as file1: 
-            for line in file1: 
+        
+        with open(self.recommendations_path) as file1:
+            for line in file1:
                 line_split = line.split("\t")
-                #0 user, 1 ranking , 2 poi
                 user = int(line_split[0])
                 poi = int(line_split[2])
-
-                if user not in dicc_recommendations: 
+                
+                if user not in dicc_recommendations:
                     dicc_recommendations[user] = set([poi])
-                        
-                else: 
-                    if len(dicc_recommendations)<self.cutoff: 
+                else:
+                    if len(dicc_recommendations[user]) < self.cutoff:
                         dicc_recommendations[user].add(poi)
+    
+    # Resto del código...
+
 
                 #tenemos diccionario con los lugares visitados por CADA usuario 
             
-
+           
             for user in dicc_recommendations: 
                 lista = []
                 visited_pois = dicc_recommendations[user]
-                
+                #print(visited_pois)
                 for i in visited_pois:
-                    if i in scores.keys():
-                     lista.append(scores[i]/len(dicc_recommendations))
+                    
+                    lista.append(scores[int(i)]/len(dicc_recommendations))
 
                 epc = 1- sum(lista)/len(lista)
 
