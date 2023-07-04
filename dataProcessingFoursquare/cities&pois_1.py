@@ -1,16 +1,6 @@
 import math
+from funciones import haversine
 
-
-#funcion haversine --> AÑADIR A ARCHIVO SEPARADO CON SOLO FUNCIONES.
-
-def haversine(lat1, lon1, lat2, lon2):
-    rad=math.pi/180
-    dlat=lat2-lat1
-    dlon=lon2-lon1
-    R=6372.795477598
-    a=(math.sin(rad*dlat/2))**2 + math.cos(rad*lat1)*math.cos(rad*lat2)*(math.sin(rad*dlon/2))**2
-    distancia=2*R*math.asin(math.sqrt(a))
-    return distancia
 
 #Leemos el archivo como lineas, hacemos split pot \t
 #Tendremos diccionario así: CodigoPais : [(Ciudad1, lat1, lon1), (Ciudad2, Lat2, Lon2)]
@@ -50,7 +40,6 @@ with open("datasets\\foursquare\\dataset_TIST2015_POIs.txt") as ficheropois:
                         dist = haversine(float(cityElement[1]), float(cityElement[2]), float(split_line_poi[1]), float(split_line_poi[2]))
                         if dist < min_dist:
                             min_dist = dist
-                            #CITY[0] ES EL NOMBRE 
                             ciudad_asignada = cityElement[0]
 
             # para reducir el tiempo, cremos únicamente el fichero de pois con los pois de las
